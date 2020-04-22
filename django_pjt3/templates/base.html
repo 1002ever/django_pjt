@@ -1,0 +1,12 @@
+{% if user.is_authenticated %}
+    <button><a href="{% url 'accounts:logout' %}">로그아웃</a></button>
+{% else %}
+    <button><a href="{% url 'accounts:signup' %}">회원가입</a></button>
+    <button><a href="{% url 'accounts:login' %}">로그인</a></button>
+{% endif %}
+
+    <button><a href="{% url 'community:create' %}">새 글 쓰기</a></button>
+    <button><a href="{% url 'community:review_list' %}">리뷰 게시판</a></button>
+
+{% block body %}
+{% endblock %}

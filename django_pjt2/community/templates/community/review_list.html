@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <h1 class="font-italic text-light">REVIEW</h1>
+    <br/>
+    <a href="{% url 'community:create' %}"><button class="btn btn-light font-weight-light">글 생성</button></a>
+    <br/><br/><hr/>
+    <table class="table table-striped table-secondary">
+      <thead>
+        <tr>
+          <th scope="col">pk</th>
+          <th scope="col">Title</th>
+          <th scope="col">Content</th>
+          <th scope="col">Rank</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for review in reviews %}
+            <tr>
+              <th scope="row">{{ review.pk }}</th>
+              <td><a href="{% url 'community:detail' review.pk %}" class="text-decoration-none text-info">{{ review.title }}</a></td>
+              <td>{{ review.content }}</td>
+              <td>{{ review.rank }}</td>
+            </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+{% endblock %}

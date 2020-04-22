@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<h1>리뷰게시판</h1>
+
+{% for review in reviews %}
+    <p><a href="{% url 'community:detail' review.pk %}">{{ review.title }}</a>
+    {{ review.movietitle }}
+    </p>
+
+{% endfor %}
+
+
+<a href="{% url 'community:create' %}">새 글쓰기</a>
+
+{% endblock %}
