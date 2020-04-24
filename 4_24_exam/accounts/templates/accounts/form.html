@@ -1,0 +1,12 @@
+<!-- url_name에 따른 분기 처리 -->
+{% if request.resolver_match.url_name == 'signup' %}
+    <h1>signup</h1>
+{% else %}
+    <h1>login</h1>
+{% endif %}
+
+<form action="" method="POST">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit">
+</form>

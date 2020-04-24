@@ -1,0 +1,19 @@
+<h1>Reservation</h1>
+
+<a href="{% url 'reservations:create' %}">create</a>
+<hr>
+<!-- personnel 값에 따른 분기, date 표기 명세대로 적용 -->
+{% for reservation in reservations %}
+    {% if reservation.personnel > 5 %}
+        <p>{{ reservation.date | date:'Y년 m월 d일' }}</p>
+        <p>{{ reservation.personnel }}</p>
+        <p>{{ reservation.location }}</p>
+    {% else %}
+        <ul>
+            <li>{{ reservation.date | date:'Y년 m월 d일' }}</li>
+            <li>{{ reservation.personnel }}</li>
+            <li>{{ reservation.location }}</li>
+        </ul>
+    {% endif %}
+    <hr>
+{% endfor %}
