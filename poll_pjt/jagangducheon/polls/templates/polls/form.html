@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <h2>POLL 만들기</h2>
+
+    <form action="" method="POST">
+        {% csrf_token %}
+        POLL 제목 : <span>{{ form.poll_subject }}</span><br/><br/>
+        천재 1 : <span>{{ form.question_a }}</span><br/><br/>
+        천재 2 : <span>{{ form.question_b }}</span><br/><br/>
+        <input type="submit" value="투표 생성">
+    </form>
+{% endblock %}

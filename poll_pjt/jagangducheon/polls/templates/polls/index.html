@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <h1>{{ poll.poll_subject }}</h1>
+    <h3>( {{ poll.vote_a }} - 비율 : {{ vote_rate_a }}% )  {{ poll.question_a }}</h3>
+    <h2>VS</h2>
+    <h3>( {{ poll.vote_b }} - 비율 : {{ vote_rate_b }}% )  {{ poll.question_b }}</h3>
+
+    <hr/>
+
+    <form action="{% url 'polls:comment_create' poll.pk %}" method="POST">
+        {% csrf_token %}
+        두 천재 중 선택 : <span>{{ comment.choice }}</span>
+        작성자 : <span>{{ comment.writer }}</span>
+        내용 : <span>{{ comment.content }}</span>
+        <input type="submit" value="댓글작성">
+    </form>
+
+    <hr/>
+
+    {% for comment in poll.comment_set.all %}
+        <h5>선택한 천재 : {{ comment.choice }}</h5>
+        <h5>작성자 : {{ comment.writer }}</h5>
+        <h4>댓글 : {{ comment.content }}</h4>
+    {% endfor %}
+    <hr/>
+{% endblock %}
