@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>INDEX</h2>
+  <a href="{% url 'articles:create' %}">NEW</a>
+  {% for article in articles %}
+    <ul>
+      <li><a href="{% url 'accounts:profile' article.user %}">{{ article.user }}</a>의 {{ article.pk }}번글</li>
+      <li>제목: {{ article.title }}</li>
+      <li>내용: {{ article.content }}</li>
+      {% if user in article.like_users.all %}
+        <a href="{% url 'articles:like' article.pk %}">💖좋아요 취소</a>
+      {% else %}
+        <a href="{% url 'articles:like' article.pk %}">🤍좋아요</a>
+      {% endif %}
+      좋아요 클릭 수 : {{ article.like_users.all.count }}
+    </ul>
+    <hr>
+  {% endfor %}
+{% endblock %}
