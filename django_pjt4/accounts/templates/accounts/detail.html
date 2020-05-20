@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block body %}
+  <h2>{{duser.username}}</h2>
+  {% if duser != user %}
+    {% if user in duser.followers.all %}
+      <h3><a href="{% url 'accounts:follow' duser.pk %}">follow 취소</a></h4>
+    {% else %}
+      <h3><a href="{% url 'accounts:follow' duser.pk %}">follow 하기</a></h3>
+    {% endif %}
+  {% endif %}
+  <h4>팔로워 수 : {{duser.followers.all.count}}</h5>
+{% endblock %}

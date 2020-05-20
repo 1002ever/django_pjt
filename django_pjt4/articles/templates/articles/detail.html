@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block body %}
+  <ul>
+    <li>작성자 : {{review.user}} </li>
+    <li>영화 : {{review.movie.title}}</li>
+    <li>제목 : {{review.title}} </li>
+    <li>내용 : {{review.content}} </li>
+
+    <!-- 로그인 한 사람만 좋아요 보이게 -->
+    {% if user != review.user %}
+      {% if user in review.like_users.all %}
+        <a href="{% url 'articles:like' review.pk %}">💖좋아요 취소</a>
+      {% else %}
+        <a href="{% url 'articles:like' review.pk %}">🤍좋아요</a>
+      {% endif %}
+    {% endif %}
+
+    <li>좋아요 클릭 수 : {{review.like_users.all.count}}</li>
+  </ul>
+
+  {% if review.user == request.user %}
+    <form action="{% url 'articles:update' review.pk %}">
+      <button>수정</button>
+    </form>
+
+    <form action="{% url 'articles:delete' review.pk %}" method="POST">
+      {% csrf_token %}
+      <button>삭제</button>
+    </form>
+  {% endif %}
+  <hr/>
+
+  <form action="{% url 'articles:comment_create' review.pk %}" method="POST">
+    {% csrf_token %}
+    {{ form }}
+    <button>댓글 작성</button>
+    <hr/>
+  </form>
+
+  {% for comment in review.comment_set.all %}
+    <span>{{comment.user}}</span>
+    <span>{{comment.content}}</span>
+    {% if comment.user == request.user %}
+      <form action="{% url 'articles:comment_delete' review.pk comment.pk %}" method="POST">
+        {% csrf_token %}
+        <button>삭제</button>
+      </form>
+    {% endif %}
+    <br/>
+  {% endfor %}
+{% endblock %}

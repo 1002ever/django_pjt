@@ -1,0 +1,13 @@
+{% if user.is_authenticated %}
+    <button><a href="{% url 'accounts:logout' %}">로그아웃</a></button>
+{% else %}
+    <button><a href="{% url 'accounts:login' %}">로그인</a></button>
+    <button><a href="{% url 'accounts:signup' %}">회원가입</a></button>
+{% endif %}
+
+<button><a href="{% url 'articles:index' %}">리뷰 게시판</a></button>
+
+<hr/>
+
+{% block body %}
+{% endblock %}

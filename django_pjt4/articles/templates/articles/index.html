@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block body %}
+  <h2>리뷰 대상 영화</h2>
+  {% for movie in movies %}
+    <h2><a href="{% url 'articles:review_index' movie.pk %}">{{movie.title}}</a></h3>
+  {% endfor %}
+  <hr/>
+{% endblock %}

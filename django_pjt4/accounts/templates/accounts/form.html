@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block body %}
+  <h2>회원 가입</h2>
+  <form action="" method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button>Submit</button>
+  </form>
+{% endblock %}

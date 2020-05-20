@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block body %}
+  <a href="{% url 'articles:create' movie_pk %}">리뷰 쓰기</a>
+  <hr/>
+  {% for review in reviews %}
+      <ul>
+        <li><a href="{% url 'accounts:detail' review.user.pk %}">{{review.user}}</a>의 {{review.pk}}번 글</li>
+        <li>영화 : {{review.movie.title}}</li>
+        <li><a href="{% url 'articles:detail' review.pk %}">제목 : {{review.title}}</a></li>
+      </ul>
+      <hr/>
+  {% endfor %}
+{% endblock %}
