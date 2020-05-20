@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+  {% for movie in page_obj %}
+    <h5 class="d-inline">{{ movie.title }}</h5>
+
+    {% if user.is_authenticated %}
+      {% if user in movie.like_users.all %}
+        <i class="fas fa-heart fa-lg" style="color:crimson" data-id="{{ movie.id }}"></i>
+      {% else %}
+        <i class="fas fa-heart fa-lg" style="color:black" data-id="{{ movie.id }}"></i>
+      {% endif %}
+    {% endif %}
+
+    <span><span id="like-count-{{ movie.id }}">{{ movie.like_users.all|length }}</span> 명이 이 영화를 좋아합니다.</span>
+
+    <br/>
+  {% endfor %}
+
+  <nav aria-label="...">
+    {% if page_obj.has_other_pages %}
+      <ul class="pagination">
+        {% if page_obj.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+          </li>
+        {% else %}
+          <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+          </li>
+        {% endif %}
+
+        {% for i in page_obj.paginator.page_range %}
+          {% if page_obj.number == i %}
+            <li class="page-item active"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+          {% else %}
+            <li><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+          {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+          </li>
+        {% else %}
+          <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Next</a>
+          </li>
+        {% endif %}
+      </ul>
+    {% endif %}
+
+
+  </nav>
+
+  <script>
+    const heartBtns = document.querySelectorAll('i')
+    heartBtns.forEach((heartBtn) => {
+      heartBtn.addEventListener('click', function(event) {
+        const movieId = event.target.dataset.id
+        const countSpan = document.querySelector(`#like-count-${movieId}`)
+
+        axios.get(`/movies/${movieId}/like/`)
+          .then((response) => {
+            if (response.data.status) {
+              event.target.style.color = 'crimson'
+              countSpan.innerHTML = response.data.count
+            } else {
+              event.target.style.color = 'black'
+              countSpan.innerHTML = response.data.count
+            }
+          })
+        .catch((error) => {
+          console.log(error)
+        })
+      })
+    })
+  </script>
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+
+{% block body %}
+
+<h2>추천 페이지</h2>
+<hr/>
+
+{% for movie in movies %}
+  <h5 class="d-inline">{{ movie.title }}</h5>
+
+  {% if user.is_authenticated %}
+    {% if user in movie.like_users.all %}
+      <i class="fas fa-heart fa-lg" style="color:crimson" data-id="{{ movie.id }}"></i>
+    {% else %}
+      <i class="fas fa-heart fa-lg" style="color:black" data-id="{{ movie.id }}"></i>
+    {% endif %}
+  {% endif %}
+
+  <span><span id="like-count-{{ movie.id }}">{{ movie.like_users.all|length }}</span> 명이 이 영화를 좋아합니다.</span>
+
+  <br/>
+{% endfor %}
+
+<script>
+  const heartBtns = document.querySelectorAll('i')
+  heartBtns.forEach((heartBtn) => {
+    heartBtn.addEventListener('click', function(event) {
+      const movieId = event.target.dataset.id
+      const countSpan = document.querySelector(`#like-count-${movieId}`)
+
+      axios.get(`/movies/${movieId}/like/`)
+        .then((response) => {
+          if (response.data.status) {
+            event.target.style.color = 'crimson'
+            countSpan.innerHTML = response.data.count
+          } else {
+            event.target.style.color = 'black'
+            countSpan.innerHTML = response.data.count
+          }
+        })
+      .catch((error) => {
+        console.log(error)
+      })
+    })
+  })
+</script>
+
+{% endblock %}
